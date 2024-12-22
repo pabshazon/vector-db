@@ -1,0 +1,9 @@
+apiVersion: v2
+name: stack-ai-vector-db
+description: Deploys the database resources needed for the python fast-api based in-memory vector-db.
+
+type: application
+
+version: 0.1.0
+
+appVersion: "0.1.0"

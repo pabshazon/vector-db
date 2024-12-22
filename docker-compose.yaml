@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  stack_ai_vector_db:
+    container_name: stack_ai_vector_db
+    platform: linux/x86_64
+    hostname: stack_ai_vector_db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .local-state/data:/stack-ai/data
+      - .src:/stack-ai/src
+    restart: always
+    networks:
+      - stack-ai-docker-net
+    ports:
+      - "7777:7777"
+
+networks:
+  stack-ai-docker-net:
+    name: stack-ai-docker-net
+    driver: bridge

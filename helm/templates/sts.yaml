@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stack-ai-vector-db
+  namespace: stack-ai
+  labels:
+    stack-ai.com/app: stack-ai-vector-db
+spec:
+  serviceName: stack-ai-vector-db
+  replicas: 1
+  selector:
+    matchLabels:
+      stack-ai.com/app: stack-ai-vector-db
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        stack-ai.com/app: stack-ai-vector-db
+      annotations:
+        timestamp: { { now | unixEpoch | quote } }
+    spec:
+      containers:
+        - name: stack-ai-vector-db
+          image: localhost:5000/stack_ai_vector_db:latest
+          imagePullPolicy: Always
+          ports:
+          - name: tcp
+            containerPort: {{ .Values.vector-db.port }}
+#          resources: @todo TBC if needed
+          volumeMounts:
+            - name: stack-ai-vector-db
+              mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: stack-ai-vector-db
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: microk8s-hostpath
+---

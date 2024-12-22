@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stack-ai-vector-db
+  namespace: stack-ai
+  labels:
+     stack-ai.com/app: stack-ai-vector-db
+spec:
+  type: ClusterIP
+  selector:
+     stack-ai.com/app: stack-ai-vector-db
+  {{ include "stack-ai-vector-db.service.ports" . }}
+---
